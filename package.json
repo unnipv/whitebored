@@ -1,0 +1,28 @@
+{
+  "name": "digital-whiteboard",
+  "version": "1.0.0",
+  "description": "Digital whiteboard and todo list for Samsung Tab E",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "echo 'No build step required'",
+    "test": "echo 'No tests specified'"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": ["whiteboard", "display", "tablet", "todo", "digital"],
+  "author": "Your Name",
+  "license": "MIT"
+} 
