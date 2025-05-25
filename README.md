@@ -4,66 +4,42 @@ Transform your Samsung Tab E into a smart utility display that shows your to-do 
 
 ## Features
 
-### 🖥️ Display Modes
 - **Whiteboard Mode**: Full-screen drawing canvas with real-time synchronization
 - **Todo List Mode**: Clean, organized task display with priority indicators
-
-### 📱 Remote Control
-- **Web-based Control**: Access from any device with a web browser
-- **Real-time Drawing**: Draw on your phone/laptop and see it instantly on the tablet
-- **Todo Management**: Add, complete, and delete tasks remotely
-- **Theme Control**: Switch between light, dark, blue, and green themes
-
-### ✨ Smart Features
+- **Remote Control**: Control from any device with a web browser
+- **Real-time Sync**: Draw on your phone, see it instantly on the tablet
 - **Priority System**: High, medium, and low priority tasks with color coding
-- **Auto-sorting**: Tasks automatically sorted by completion status and priority
-- **Touch Support**: Full touch support for mobile devices
-- **Screen Wake Lock**: Keeps the tablet screen awake (when supported)
-- **Responsive Design**: Works on phones, tablets, and desktops
+- **Theme Control**: Switch between light, dark, blue, and green themes
+- **Touch Support**: Works on phones, tablets, and desktops
 
-## Setup Instructions
+## Quick Start (Local)
 
-### Prerequisites
-- Node.js (version 14 or higher)
-- Your Samsung Tab E with Lineage OS (or any Android browser)
-- All devices connected to the same WiFi network
+1. **Install dependencies**: `npm install`
+2. **Start server**: `npm start`
+3. **Samsung Tab E**: Navigate to `http://YOUR_IP:3000/display`
+4. **Phone/Laptop**: Navigate to `http://YOUR_IP:3000`
 
-### Installation
+## Deploy to Railway (Free 24/7 Hosting)
 
-1. **Clone or download this project** to your computer
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+For always-on access from anywhere:
 
-3. **Start the server**:
-   ```bash
-   npm start
-   ```
-   
-   For development with auto-restart:
-   ```bash
-   npm run dev
-   ```
+1. **Push to GitHub**: Create a repository with this code
+2. **Deploy to Railway**:
+   - Go to [railway.app](https://railway.app)
+   - Sign up with GitHub
+   - Click "New Project" → "Deploy from GitHub repo"
+   - Select your repository
+   - Railway automatically deploys!
 
-4. **Find your computer's IP address**:
-   - **Windows**: Open Command Prompt and run `ipconfig`
-   - **Mac/Linux**: Open Terminal and run `ifconfig` or `ip addr show`
-   - Look for your local IP address (usually starts with 192.168.x.x or 10.x.x.x)
+3. **Access URLs**:
+   - **Control**: `https://your-app.railway.app`
+   - **Display**: `https://your-app.railway.app/display`
 
-### Device Setup
-
-#### Samsung Tab E (Display)
-1. Open the web browser on your tablet
-2. Navigate to: `http://YOUR_COMPUTER_IP:3000/display`
-3. Bookmark this page for easy access
-4. **Optional**: Set the browser to full-screen mode
-5. **Optional**: Disable screen timeout in Android settings
-
-#### Phone/Laptop (Control)
-1. Open a web browser
-2. Navigate to: `http://YOUR_COMPUTER_IP:3000`
-3. Bookmark this page for easy access
+### Samsung Tab E Setup
+1. Bookmark: `https://your-app.railway.app/display`
+2. Enable full-screen mode
+3. Disable screen timeout
+4. Set as homepage for auto-loading
 
 ## Usage Guide
 

@@ -137,16 +137,9 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
 
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Digital Whiteboard server running on port ${PORT}`);
-  
-  if (process.env.NODE_ENV === 'production') {
-    console.log(`🌐 Production server running`);
-    console.log(`🔗 Access your whiteboard at: https://your-app-name.railway.app`);
-  } else {
-    console.log(`Control interface: http://${HOST}:${PORT}`);
-    console.log(`Display interface: http://${HOST}:${PORT}/display`);
-  }
+  console.log(`🎨 Digital Whiteboard server running on port ${PORT}`);
+  console.log(`📱 Control interface: http://localhost:${PORT}`);
+  console.log(`🖥️  Display interface: http://localhost:${PORT}/display`);
 }); 
