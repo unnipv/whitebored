@@ -17,7 +17,6 @@ Transform your Samsung Tab E (with Lineage OS) into a utility display showing a 
 ### Prerequisites
 - Node.js (v14 or higher)
 - Samsung Tab E with Lineage OS (or any Android tablet)
-- All devices on the same local network
 
 ### Installation
 
@@ -32,14 +31,35 @@ Transform your Samsung Tab E (with Lineage OS) into a utility display showing a 
    npm install
    ```
 
-3. **Start the server**:
+### Local Network Access
+
+3. **Start for local network only**:
    ```bash
-   npm start
+   ./start-local.sh
    ```
 
 4. **Access the interfaces**:
    - **Control Interface** (phone/laptop): `http://YOUR_MAC_IP:3000`
    - **Display Interface** (tablet): `http://YOUR_MAC_IP:3000/display.html`
+
+### Public Internet Access
+
+3. **Start with public internet access**:
+   ```bash
+   ./start-public.sh
+   ```
+
+4. **Access from anywhere**:
+   - **Control Interface**: `https://abc123.ngrok.io`
+   - **Display Interface**: `https://abc123.ngrok.io/display.html`
+   - URLs will be shown when you run the script
+
+## Access Methods Comparison
+
+| Method | Command | Access | Speed | Security | Cost |
+|--------|---------|--------|-------|----------|------|
+| **Local Network** | `./start-local.sh` | Same WiFi only | ⚡ Fastest | 🔒 Most Secure | 💰 Free |
+| **Public Internet** | `./start-public.sh` | Anywhere | 🐌 Internet Speed | ⚠️ Public URLs | 💰 Free (ngrok) |
 
 ### Finding Your Mac's IP Address
 
@@ -76,6 +96,36 @@ If you can't connect from other devices:
 1. Go to System Preferences > Security & Privacy > Firewall
 2. Click "Firewall Options"
 3. Allow incoming connections for Node.js or disable firewall temporarily
+
+## Public Internet Access Options
+
+### Option 1: ngrok (Recommended - Free)
+```bash
+./start-public.sh
+```
+- ✅ **Free tier available**
+- ✅ **HTTPS included**
+- ✅ **Easy setup**
+- ⚠️ **Random URLs** (changes each restart)
+- ⚠️ **8-hour session limit** (free tier)
+
+### Option 2: Router Port Forwarding (Advanced)
+1. **Configure your router**:
+   - Forward port 3000 to your Mac's IP
+   - Set up dynamic DNS (optional)
+2. **Access via**: `http://YOUR_PUBLIC_IP:3000`
+3. **Benefits**: Permanent URL, no session limits
+4. **Drawbacks**: Security risks, router configuration needed
+
+### Option 3: Tailscale (Private Network)
+```bash
+# Install Tailscale on all devices
+brew install tailscale
+```
+- ✅ **Private network** (not public)
+- ✅ **Secure** end-to-end encryption
+- ✅ **Easy device management**
+- ✅ **Works anywhere**
 
 ## Raspberry Pi Migration (Recommended)
 
