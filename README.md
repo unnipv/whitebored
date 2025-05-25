@@ -44,12 +44,22 @@ Transform your Samsung Tab E (with Lineage OS) into a utility display showing a 
 
 ### Public Internet Access
 
-3. **Start with public internet access**:
+3. **Set up public access (one-time)**:
+   ```bash
+   # Copy the sample file
+   cp start-public.sample.sh start-public.sh
+   
+   # Set up ngrok authentication (see instructions in the file)
+   # Then make it executable
+   chmod +x start-public.sh
+   ```
+
+4. **Start with public internet access**:
    ```bash
    ./start-public.sh
    ```
 
-4. **Access from anywhere**:
+5. **Access from anywhere**:
    - **Control Interface**: `https://abc123.ngrok.io`
    - **Display Interface**: `https://abc123.ngrok.io/display.html`
    - URLs will be shown when you run the script
@@ -60,6 +70,8 @@ Transform your Samsung Tab E (with Lineage OS) into a utility display showing a 
 |--------|---------|--------|-------|----------|------|
 | **Local Network** | `./start-local.sh` | Same WiFi only | ⚡ Fastest | 🔒 Most Secure | 💰 Free |
 | **Public Internet** | `./start-public.sh` | Anywhere | 🐌 Internet Speed | ⚠️ Public URLs | 💰 Free (ngrok) |
+
+> **Note**: `start-public.sh` is not included in the repository. Copy from `start-public.sample.sh` and configure with your ngrok settings.
 
 ### Finding Your Mac's IP Address
 
@@ -147,13 +159,15 @@ For a dedicated 24/7 solution, consider moving to a Raspberry Pi:
 
 ```
 whitebored/
-├── server.js              # Main server file
-├── package.json           # Dependencies and scripts
+├── server.js                 # Main server file
+├── package.json              # Dependencies and scripts
+├── start-local.sh            # Local network startup script
+├── start-public.sample.sh    # Sample public access script
 ├── public/
-│   ├── control.html       # Control interface
-│   ├── display.html       # Display interface
-│   └── style.css          # Shared styles
-├── whiteboard-data.json   # Auto-generated data file
+│   ├── control.html          # Control interface
+│   ├── display.html          # Display interface
+│   └── style.css             # Shared styles
+├── whiteboard-data.json      # Auto-generated data file (gitignored)
 └── README.md
 ```
 

@@ -1,6 +1,15 @@
 #!/bin/bash
 
-# Digital Whiteboard Public Internet Access Script
+# Digital Whiteboard Public Internet Access Script (Sample)
+# 
+# SETUP INSTRUCTIONS:
+# 1. Copy this file to start-public.sh: cp start-public.sample.sh start-public.sh
+# 2. Sign up for ngrok at https://ngrok.com (free)
+# 3. Get your authtoken from https://dashboard.ngrok.com/get-started/your-authtoken
+# 4. Run: ngrok config add-authtoken YOUR_TOKEN_HERE
+# 5. (Optional) If you have a custom ngrok domain, uncomment and edit line 42
+# 6. Run: ./start-public.sh
+
 echo "🌐 Starting Digital Whiteboard with Public Internet Access..."
 echo ""
 
@@ -36,7 +45,12 @@ echo "⏳ Please wait while ngrok establishes connection..."
 echo ""
 
 # Start ngrok and capture the output
-ngrok http --url=fitting-proud-redbird.ngrok-free.app 3000 --log=stdout > ngrok.log 2>&1 &
+# Option 1: Random URL (free tier)
+ngrok http 3000 --log=stdout > ngrok.log 2>&1 &
+
+# Option 2: Custom domain (paid tier) - uncomment and edit the line below
+# ngrok http --url=your-custom-domain.ngrok-free.app 3000 --log=stdout > ngrok.log 2>&1 &
+
 NGROK_PID=$!
 
 # Wait for ngrok to establish connection

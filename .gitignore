@@ -75,8 +75,12 @@ jspm_packages/
 ehthumbs.db
 Thumbs.db
 
-# Whiteboard data (optional - remove this line if you want to commit saved state)
+# Whiteboard data (contains personal drawings and todos)
 whiteboard-data.json
+
+# ngrok configuration and logs
+ngrok.log
+start-public.sh
 
 # Logs
 logs
