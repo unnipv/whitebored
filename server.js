@@ -29,11 +29,17 @@ let whiteboardState = {
   textColor: '#000000'
 };
 
-// Simple file-based persistence (optional)
+// Simple file-based persistence (optional, disabled on serverless platforms)
 const DATA_FILE = 'whiteboard-data.json';
+const isServerless = process.env.VERCEL || process.env.RAILWAY || process.env.RENDER;
 
 // Load saved state on startup
 function loadState() {
+  if (isServerless) {
+    console.log('🌐 Running on serverless platform - skipping file persistence');
+    return;
+  }
+  
   try {
     if (fs.existsSync(DATA_FILE)) {
       const data = fs.readFileSync(DATA_FILE, 'utf8');
@@ -47,6 +53,10 @@ function loadState() {
 
 // Save state to file
 function saveState() {
+  if (isServerless) {
+    return; // Skip saving on serverless platforms
+  }
+  
   try {
     fs.writeFileSync(DATA_FILE, JSON.stringify(whiteboardState, null, 2));
   } catch (error) {
@@ -57,8 +67,18 @@ function saveState() {
 // Load state on startup
 loadState();
 
-// Auto-save every 30 seconds
-setInterval(saveState, 30000);
+// Auto-save every 30 seconds (only on non-serverless)
+if (!isServerless) {
+  setInterval(saveState, 30000);
+}
+
+// Broadcast state to all clients every 10 seconds to ensure sync
+setInterval(() => {
+  if (io.engine.clientsCount > 0) {
+    io.emit('state-update', whiteboardState);
+    console.log(`📡 Broadcasting state to ${io.engine.clientsCount} clients`);
+  }
+}, 10000);
 
 // Routes
 app.get('/', (req, res) => {
@@ -95,40 +115,47 @@ io.on('connection', (socket) => {
   // Handle todo operations
   socket.on('add-todo', (todo) => {
     const newTodo = {
-      id: Date.now(),
+      id: Date.now() + Math.random(), // More unique ID
       text: todo.text,
       completed: false,
       priority: todo.priority || 'medium',
       createdAt: new Date().toISOString()
     };
     whiteboardState.todos.push(newTodo);
-    io.emit('todos-update', whiteboardState.todos);
+    console.log('📝 Added todo:', newTodo.text);
+    // Send full state update to ensure sync
+    io.emit('state-update', whiteboardState);
   });
   
   socket.on('toggle-todo', (todoId) => {
     const todo = whiteboardState.todos.find(t => t.id === todoId);
     if (todo) {
       todo.completed = !todo.completed;
-      io.emit('todos-update', whiteboardState.todos);
+      console.log('✅ Toggled todo:', todo.text, 'completed:', todo.completed);
+      io.emit('state-update', whiteboardState);
     }
   });
   
   socket.on('delete-todo', (todoId) => {
+    const todoToDelete = whiteboardState.todos.find(t => t.id === todoId);
     whiteboardState.todos = whiteboardState.todos.filter(t => t.id !== todoId);
-    io.emit('todos-update', whiteboardState.todos);
+    console.log('🗑️ Deleted todo:', todoToDelete?.text);
+    io.emit('state-update', whiteboardState);
   });
   
   // Handle mode switching
   socket.on('change-mode', (mode) => {
     whiteboardState.currentMode = mode;
-    io.emit('mode-change', mode);
+    console.log('🔄 Mode changed to:', mode);
+    io.emit('state-update', whiteboardState);
   });
   
   // Handle theme changes
   socket.on('change-theme', (theme) => {
     whiteboardState.backgroundColor = theme.backgroundColor;
     whiteboardState.textColor = theme.textColor;
-    io.emit('theme-change', theme);
+    console.log('🎨 Theme changed:', theme);
+    io.emit('state-update', whiteboardState);
   });
   
   socket.on('disconnect', () => {
