@@ -24,7 +24,7 @@ app.use(express.static('public'));
 let whiteboardState = {
   drawings: [],
   todos: [],
-  currentMode: 'whiteboard', // 'whiteboard' or 'todo'
+  currentMode: 'todo', // 'whiteboard' or 'todo'
   backgroundColor: '#ffffff',
   textColor: '#000000'
 };
