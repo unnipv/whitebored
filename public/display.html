@@ -26,6 +26,189 @@
             position: relative;
         }
 
+        /* Tab Controls */
+        .tab-controls {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 5px;
+            z-index: 1000;
+            gap: 5px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 20px;
+            background: transparent;
+            color: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            color: #333;
+        }
+
+        /* Water Reminder */
+        .water-reminder {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 123, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 10px 15px;
+            z-index: 1000;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #007bff;
+            border: 2px solid rgba(0, 123, 255, 0.2);
+        }
+
+        .water-glass-icon {
+            font-size: 1.2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .water-timer {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        /* Water Reminder Popup */
+        .water-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            z-index: 2000;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            display: none;
+            animation: popupSlideIn 0.5s ease-out;
+        }
+
+        @keyframes popupSlideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .water-popup.show {
+            display: block;
+        }
+
+        .water-popup-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .water-popup h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .water-popup p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .water-popup-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .water-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .water-btn.primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .water-btn.primary:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .water-btn.secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .water-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Popup Overlay */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        .popup-overlay.show {
+            display: block;
+        }
+
         /* Whiteboard Mode */
         .whiteboard-mode {
             display: block;
@@ -46,6 +229,7 @@
         .todo-mode {
             display: none;
             padding: 40px;
+            padding-top: 100px; /* Account for tab controls */
             height: 100vh;
             overflow-y: auto;
         }
@@ -85,6 +269,14 @@
             font-size: 1.8rem;
             transition: all 0.3s ease;
             border-left: 5px solid transparent;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .todo-item:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .todo-item.completed {
@@ -114,6 +306,7 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            transition: all 0.3s ease;
         }
 
         .todo-checkbox.completed {
@@ -178,20 +371,6 @@
             color: #ff4757;
         }
 
-        /* Mode indicator */
-        .mode-indicator {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background-color: rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
-            font-size: 1rem;
-            z-index: 1000;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
         /* Empty state */
         .empty-state {
             text-align: center;
@@ -212,6 +391,7 @@
         @media (max-width: 1024px) {
             .todo-mode {
                 padding: 30px;
+                padding-top: 90px;
             }
             
             .todo-header h1 {
@@ -222,11 +402,30 @@
                 font-size: 1.6rem;
                 padding: 18px;
             }
+
+            .tab-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .water-popup {
+                padding: 30px;
+                margin: 20px;
+            }
+
+            .water-popup h2 {
+                font-size: 1.8rem;
+            }
+
+            .water-popup-icon {
+                font-size: 3rem;
+            }
         }
 
         @media (max-width: 768px) {
             .todo-mode {
                 padding: 20px;
+                padding-top: 80px;
             }
             
             .todo-header h1 {
@@ -237,14 +436,64 @@
                 font-size: 1.4rem;
                 padding: 15px;
             }
+
+            .tab-btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+
+            .water-reminder {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .water-popup {
+                padding: 25px;
+                margin: 15px;
+            }
+
+            .water-popup h2 {
+                font-size: 1.5rem;
+            }
+
+            .water-popup-icon {
+                font-size: 2.5rem;
+            }
+
+            .water-popup-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Status indicators -->
+        <!-- Tab Controls -->
+        <div class="tab-controls">
+            <button class="tab-btn active" data-mode="whiteboard">Whiteboard</button>
+            <button class="tab-btn" data-mode="todo">Todo List</button>
+        </div>
+
+        <!-- Water Reminder Timer -->
+        <div class="water-reminder" id="waterReminder">
+            <div class="water-glass-icon">💧</div>
+            <div class="water-timer" id="waterTimer">--:--</div>
+        </div>
+
+        <!-- Status indicator -->
         <div class="status-indicator disconnected" id="connectionStatus">Disconnected</div>
-        <div class="mode-indicator" id="modeIndicator">Whiteboard</div>
+
+        <!-- Water Reminder Popup -->
+        <div class="popup-overlay" id="popupOverlay"></div>
+        <div class="water-popup" id="waterPopup">
+            <div class="water-popup-icon">💧</div>
+            <h2>Time to Hydrate!</h2>
+            <p>It's been an hour since your last reminder. Don't forget to drink some water to stay healthy and focused!</p>
+            <div class="water-popup-buttons">
+                <button class="water-btn primary" onclick="dismissWaterReminder()">I Drank Water! 💪</button>
+                <button class="water-btn secondary" onclick="snoozeWaterReminder()">Remind me in 10 min</button>
+            </div>
+        </div>
 
         <!-- Whiteboard Mode -->
         <div class="whiteboard-mode" id="whiteboardMode">
@@ -273,13 +522,17 @@
         
         // DOM elements
         const connectionStatus = document.getElementById('connectionStatus');
-        const modeIndicator = document.getElementById('modeIndicator');
         const whiteboardMode = document.getElementById('whiteboardMode');
         const todoMode = document.getElementById('todoMode');
         const canvas = document.getElementById('whiteboard');
         const ctx = canvas.getContext('2d');
         const todoList = document.getElementById('todoList');
         const currentDate = document.getElementById('currentDate');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const waterReminder = document.getElementById('waterReminder');
+        const waterTimer = document.getElementById('waterTimer');
+        const waterPopup = document.getElementById('waterPopup');
+        const popupOverlay = document.getElementById('popupOverlay');
 
         // Set current date
         currentDate.textContent = new Date().toLocaleDateString('en-US', {
@@ -301,6 +554,201 @@
         // Drawing state
         let currentMode = 'whiteboard';
         let drawings = [];
+        let todos = [];
+
+        // Water reminder state
+        let waterReminderInterval;
+        let waterTimerInterval;
+        let nextWaterTime;
+        let isSnoozing = false;
+
+        // Initialize water reminder
+        function initWaterReminder() {
+            scheduleNextWaterReminder();
+            startWaterTimer();
+        }
+
+        function scheduleNextWaterReminder() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            
+            // Water reminder active from 8 AM to 12 midnight (24:00)
+            if (currentHour >= 8 && currentHour < 24) {
+                // Schedule next reminder for the next hour
+                nextWaterTime = new Date();
+                nextWaterTime.setHours(currentHour + 1, 0, 0, 0);
+            } else if (currentHour < 8) {
+                // Before 8 AM, schedule for 8 AM
+                nextWaterTime = new Date();
+                nextWaterTime.setHours(8, 0, 0, 0);
+            } else {
+                // After midnight, schedule for 8 AM next day
+                nextWaterTime = new Date();
+                nextWaterTime.setDate(nextWaterTime.getDate() + 1);
+                nextWaterTime.setHours(8, 0, 0, 0);
+            }
+
+            // Clear existing interval
+            if (waterReminderInterval) {
+                clearInterval(waterReminderInterval);
+            }
+
+            // Set interval to check every minute
+            waterReminderInterval = setInterval(checkWaterReminder, 60000);
+        }
+
+        function checkWaterReminder() {
+            const now = new Date();
+            
+            if (now >= nextWaterTime) {
+                showWaterReminder();
+                
+                // Schedule next reminder (1 hour later)
+                const currentHour = now.getHours();
+                if (currentHour < 23) { // Before 11 PM, schedule next hour
+                    nextWaterTime = new Date();
+                    nextWaterTime.setHours(currentHour + 1, 0, 0, 0);
+                } else { // After 11 PM, schedule for 8 AM next day
+                    nextWaterTime = new Date();
+                    nextWaterTime.setDate(nextWaterTime.getDate() + 1);
+                    nextWaterTime.setHours(8, 0, 0, 0);
+                }
+            }
+        }
+
+        function startWaterTimer() {
+            if (waterTimerInterval) {
+                clearInterval(waterTimerInterval);
+            }
+
+            waterTimerInterval = setInterval(updateWaterTimer, 1000);
+            updateWaterTimer(); // Initial update
+        }
+
+        function updateWaterTimer() {
+            if (!nextWaterTime) return;
+
+            const now = new Date();
+            const timeLeft = nextWaterTime - now;
+
+            if (timeLeft <= 0) {
+                waterTimer.textContent = "00:00";
+                return;
+            }
+
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            if (hours > 0) {
+                waterTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+            } else {
+                waterTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function showWaterReminder() {
+            // Play notification sound
+            playNotificationSound();
+            
+            // Show popup
+            popupOverlay.classList.add('show');
+            waterPopup.classList.add('show');
+        }
+
+        function dismissWaterReminder() {
+            popupOverlay.classList.remove('show');
+            waterPopup.classList.remove('show');
+            isSnoozing = false;
+        }
+
+        function snoozeWaterReminder() {
+            popupOverlay.classList.remove('show');
+            waterPopup.classList.remove('show');
+            
+            // Set snooze for 10 minutes
+            isSnoozing = true;
+            nextWaterTime = new Date();
+            nextWaterTime.setMinutes(nextWaterTime.getMinutes() + 10);
+        }
+
+        function playNotificationSound() {
+            // Create audio context for notification sound
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Create a pleasant water drop sound
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Water drop sound frequencies
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.3);
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+                
+                // Second drop
+                setTimeout(() => {
+                    const oscillator2 = audioContext.createOscillator();
+                    const gainNode2 = audioContext.createGain();
+                    
+                    oscillator2.connect(gainNode2);
+                    gainNode2.connect(audioContext.destination);
+                    
+                    oscillator2.frequency.setValueAtTime(600, audioContext.currentTime);
+                    oscillator2.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 0.3);
+                    
+                    gainNode2.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    
+                    oscillator2.start(audioContext.currentTime);
+                    oscillator2.stop(audioContext.currentTime + 0.3);
+                }, 200);
+                
+            } catch (error) {
+                console.log('Audio notification not supported:', error);
+            }
+        }
+
+        // Make functions globally accessible
+        window.dismissWaterReminder = dismissWaterReminder;
+        window.snoozeWaterReminder = snoozeWaterReminder;
+
+        // Tab switching functionality
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.dataset.mode;
+                switchMode(mode);
+                
+                // Send mode change to server
+                socket.emit('change-mode', mode);
+            });
+        });
+
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // Update tab buttons
+            tabButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+            
+            // Update display
+            if (mode === 'whiteboard') {
+                whiteboardMode.classList.remove('hidden');
+                todoMode.classList.remove('active');
+            } else {
+                whiteboardMode.classList.add('hidden');
+                todoMode.classList.add('active');
+            }
+        }
 
         // Socket event handlers
         socket.on('connect', () => {
@@ -316,10 +764,11 @@
         socket.on('state-update', (state) => {
             currentMode = state.currentMode;
             drawings = state.drawings;
-            updateMode();
+            todos = state.todos || [];
+            switchMode(currentMode);
             updateTheme(state.backgroundColor, state.textColor);
             redrawCanvas();
-            updateTodos(state.todos);
+            updateTodos(todos);
         });
 
         socket.on('draw', (drawData) => {
@@ -333,30 +782,17 @@
         });
 
         socket.on('mode-change', (mode) => {
-            currentMode = mode;
-            updateMode();
+            switchMode(mode);
         });
 
         socket.on('theme-change', (theme) => {
             updateTheme(theme.backgroundColor, theme.textColor);
         });
 
-        socket.on('todos-update', (todos) => {
+        socket.on('todos-update', (newTodos) => {
+            todos = newTodos;
             updateTodos(todos);
         });
-
-        // Mode management
-        function updateMode() {
-            modeIndicator.textContent = currentMode.charAt(0).toUpperCase() + currentMode.slice(1);
-            
-            if (currentMode === 'whiteboard') {
-                whiteboardMode.classList.remove('hidden');
-                todoMode.classList.remove('active');
-            } else {
-                whiteboardMode.classList.add('hidden');
-                todoMode.classList.add('active');
-            }
-        }
 
         // Theme management
         function updateTheme(backgroundColor, textColor) {
@@ -412,12 +848,44 @@
             });
 
             todoList.innerHTML = sortedTodos.map(todo => `
-                <div class="todo-item ${todo.completed ? 'completed' : ''} ${todo.priority}-priority">
+                <div class="todo-item ${todo.completed ? 'completed' : ''} ${todo.priority}-priority" 
+                     onclick="toggleTodo(${todo.id})" 
+                     data-todo-id="${todo.id}">
                     <div class="todo-checkbox ${todo.completed ? 'completed' : ''}"></div>
                     <div class="todo-text">${todo.text}</div>
                     <div class="todo-priority priority-${todo.priority}">${todo.priority}</div>
                 </div>
             `).join('');
+        }
+
+        // Todo interaction
+        function toggleTodo(id) {
+            // Send toggle request to server
+            socket.emit('toggle-todo', id);
+            
+            // Provide immediate visual feedback
+            const todoElement = document.querySelector(`[data-todo-id="${id}"]`);
+            if (todoElement) {
+                todoElement.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    todoElement.style.transform = '';
+                }, 150);
+            }
+        }
+
+        // Make toggleTodo globally accessible
+        window.toggleTodo = toggleTodo;
+
+        // Initialize water reminder when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initWaterReminder();
+        });
+
+        // Initialize immediately if DOM is already loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initWaterReminder);
+        } else {
+            initWaterReminder();
         }
 
         // Prevent context menu and other interactions
