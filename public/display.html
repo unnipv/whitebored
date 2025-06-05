@@ -240,37 +240,75 @@
 
         .todo-header {
             text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .todo-header h1 {
-            font-size: 3rem;
-            font-weight: 300;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         .todo-date {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             opacity: 0.7;
         }
 
-        .todo-list {
-            max-width: 800px;
+        .todo-categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1400px;
             margin: 0 auto;
+        }
+
+        .category-section {
+            background-color: rgba(0, 0, 0, 0.02);
+            border-radius: 20px;
+            padding: 30px;
+            min-height: 300px;
+        }
+
+        .category-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+        }
+
+        .category-header.work {
+            border-bottom-color: #667eea;
+        }
+
+        .category-header.life {
+            border-bottom-color: #2ed573;
+        }
+
+        .category-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .category-count {
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        .todo-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .todo-item {
             display: flex;
             align-items: center;
-            padding: 20px;
-            margin-bottom: 15px;
-            background-color: rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
-            font-size: 1.8rem;
+            padding: 14px 18px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            font-size: 1.3rem;
             transition: all 0.3s ease;
-            border-left: 5px solid transparent;
+            border-left: 4px solid transparent;
             cursor: pointer;
             user-select: none;
+            line-height: 1.3;
         }
 
         .todo-item:hover {
@@ -297,11 +335,11 @@
         }
 
         .todo-checkbox {
-            width: 30px;
-            height: 30px;
-            margin-right: 20px;
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
             border-radius: 50%;
-            border: 3px solid currentColor;
+            border: 2px solid currentColor;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -317,21 +355,22 @@
             content: '✓';
             color: white;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
         }
 
         .todo-text {
             flex: 1;
-            line-height: 1.4;
+            line-height: 1.3;
+            font-weight: 500;
         }
 
         .todo-priority {
-            font-size: 1rem;
-            padding: 5px 10px;
-            border-radius: 20px;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 12px;
             text-transform: uppercase;
             font-weight: bold;
-            margin-left: 15px;
+            margin-left: 10px;
         }
 
         .priority-high {
@@ -374,13 +413,20 @@
         /* Empty state */
         .empty-state {
             text-align: center;
-            margin-top: 100px;
-            opacity: 0.5;
+            padding: 40px 20px;
+            opacity: 0.4;
         }
 
         .empty-state h2 {
             font-size: 2rem;
             margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.2rem;
+            margin: 0;
+            font-weight: 400;
+            font-style: italic;
         }
 
         .empty-state p {
@@ -390,17 +436,45 @@
         /* Responsive adjustments for tablet */
         @media (max-width: 1024px) {
             .todo-mode {
-                padding: 30px;
-                padding-top: 90px;
+                padding: 25px;
+                padding-top: 85px;
             }
             
             .todo-header h1 {
-                font-size: 2.5rem;
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+
+            .todo-date {
+                font-size: 1.2rem;
+            }
+
+            .todo-categories {
+                gap: 25px;
+            }
+
+            .category-section {
+                padding: 20px;
+            }
+
+            .category-title {
+                font-size: 1.8rem;
             }
             
             .todo-item {
-                font-size: 1.6rem;
-                padding: 18px;
+                font-size: 1.1rem;
+                padding: 12px 15px;
+            }
+
+            .todo-checkbox {
+                width: 18px;
+                height: 18px;
+                margin-right: 12px;
+            }
+
+            .todo-priority {
+                font-size: 0.7rem;
+                padding: 3px 6px;
             }
 
             .tab-btn {
@@ -463,6 +537,30 @@
             .water-popup-buttons {
                 flex-direction: column;
             }
+
+            .todo-categories {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .category-section {
+                padding: 15px;
+            }
+
+            .category-title {
+                font-size: 1.5rem;
+            }
+
+            .todo-item {
+                font-size: 1rem;
+                padding: 10px 12px;
+            }
+
+            .todo-checkbox {
+                width: 16px;
+                height: 16px;
+                margin-right: 10px;
+            }
         }
     </style>
 </head>
@@ -503,13 +601,30 @@
         <!-- Todo Mode -->
         <div class="todo-mode" id="todoMode">
             <div class="todo-header">
-                <h1>Today's Tasks</h1>
-                <div class="todo-date" id="currentDate"></div>
+                <div class="todo-date" id="currentDate">Tasks</div>
             </div>
-            <div class="todo-list" id="todoList">
-                <div class="empty-state">
-                    <h2>No tasks yet</h2>
-                    <p>Add some tasks from your control device</p>
+            <div class="todo-categories">
+                <div class="category-section">
+                    <div class="category-header work">
+                        <div class="category-title">Work</div>
+                        <div class="category-count" id="workCount">0 tasks</div>
+                    </div>
+                    <div class="todo-list" id="workTodoList">
+                        <div class="empty-state">
+                            <h3>No work tasks</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-section">
+                    <div class="category-header life">
+                        <div class="category-title">Life</div>
+                        <div class="category-count" id="lifeCount">0 tasks</div>
+                    </div>
+                    <div class="todo-list" id="lifeTodoList">
+                        <div class="empty-state">
+                            <h3>No life tasks</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -526,7 +641,10 @@
         const todoMode = document.getElementById('todoMode');
         const canvas = document.getElementById('whiteboard');
         const ctx = canvas.getContext('2d');
-        const todoList = document.getElementById('todoList');
+        const workTodoList = document.getElementById('workTodoList');
+        const lifeTodoList = document.getElementById('lifeTodoList');
+        const workCount = document.getElementById('workCount');
+        const lifeCount = document.getElementById('lifeCount');
         const currentDate = document.getElementById('currentDate');
         const tabButtons = document.querySelectorAll('.tab-btn');
         const waterReminder = document.getElementById('waterReminder');
@@ -828,16 +946,19 @@
         // Todo management
         function updateTodos(todos) {
             if (!todos || todos.length === 0) {
-                todoList.innerHTML = `
-                    <div class="empty-state">
-                        <h2>No tasks yet</h2>
-                        <p>Add some tasks from your control device</p>
-                    </div>
-                `;
+                workTodoList.innerHTML = '<div class="empty-state"><h3>No work tasks</h3></div>';
+                lifeTodoList.innerHTML = '<div class="empty-state"><h3>No life tasks</h3></div>';
+                workCount.textContent = '0 tasks';
+                lifeCount.textContent = '0 tasks';
                 return;
             }
 
-            const sortedTodos = todos.sort((a, b) => {
+            // Separate todos by category (with backward compatibility)
+            const workTodos = todos.filter(todo => todo.category === 'work');
+            const lifeTodos = todos.filter(todo => todo.category === 'life' || !todo.category); // Default to life
+
+            // Sort function for both categories
+            const sortTodos = (todoList) => todoList.sort((a, b) => {
                 // Sort by completion status first, then by priority
                 if (a.completed !== b.completed) {
                     return a.completed ? 1 : -1;
@@ -847,15 +968,50 @@
                 return priorityOrder[a.priority] - priorityOrder[b.priority];
             });
 
-            todoList.innerHTML = sortedTodos.map(todo => `
-                <div class="todo-item ${todo.completed ? 'completed' : ''} ${todo.priority}-priority" 
-                     onclick="toggleTodo(${todo.id})" 
-                     data-todo-id="${todo.id}">
-                    <div class="todo-checkbox ${todo.completed ? 'completed' : ''}"></div>
-                    <div class="todo-text">${todo.text}</div>
-                    <div class="todo-priority priority-${todo.priority}">${todo.priority}</div>
-                </div>
-            `).join('');
+            const sortedWorkTodos = sortTodos(workTodos);
+            const sortedLifeTodos = sortTodos(lifeTodos);
+
+            // Update work section
+            if (sortedWorkTodos.length === 0) {
+                workTodoList.innerHTML = '<div class="empty-state"><h3>No work tasks</h3></div>';
+            } else {
+                workTodoList.innerHTML = sortedWorkTodos.map(todo => `
+                    <div class="todo-item ${todo.completed ? 'completed' : ''} ${todo.priority}-priority" 
+                         onclick="toggleTodo(${todo.id})" 
+                         data-todo-id="${todo.id}">
+                        <div class="todo-checkbox ${todo.completed ? 'completed' : ''}"></div>
+                        <div class="todo-text">${todo.text}</div>
+                        <div class="todo-priority priority-${todo.priority}">${todo.priority}</div>
+                    </div>
+                `).join('');
+            }
+
+            // Update life section
+            if (sortedLifeTodos.length === 0) {
+                lifeTodoList.innerHTML = '<div class="empty-state"><h3>No life tasks</h3></div>';
+            } else {
+                lifeTodoList.innerHTML = sortedLifeTodos.map(todo => `
+                    <div class="todo-item ${todo.completed ? 'completed' : ''} ${todo.priority}-priority" 
+                         onclick="toggleTodo(${todo.id})" 
+                         data-todo-id="${todo.id}">
+                        <div class="todo-checkbox ${todo.completed ? 'completed' : ''}"></div>
+                        <div class="todo-text">${todo.text}</div>
+                        <div class="todo-priority priority-${todo.priority}">${todo.priority}</div>
+                    </div>
+                `).join('');
+            }
+
+            // Update counters
+            const workIncomplete = sortedWorkTodos.filter(todo => !todo.completed).length;
+            const lifeIncomplete = sortedLifeTodos.filter(todo => !todo.completed).length;
+            
+            workCount.textContent = workIncomplete === 0 ? 
+                (sortedWorkTodos.length === 0 ? '0 tasks' : 'All done! ✓') : 
+                `${workIncomplete} pending`;
+            
+            lifeCount.textContent = lifeIncomplete === 0 ? 
+                (sortedLifeTodos.length === 0 ? '0 tasks' : 'All done! ✓') : 
+                `${lifeIncomplete} pending`;
         }
 
         // Todo interaction

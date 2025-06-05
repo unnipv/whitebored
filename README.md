@@ -5,7 +5,11 @@ Transform your Samsung Tab E (with Lineage OS) into a utility display showing a 
 ## Features
 
 - **Real-time whiteboard drawing** with multiple colors and brush sizes
-- **Todo list management** with priority levels (High, Medium, Low)
+- **Todo list management** with:
+    - **Categorization**: Organize tasks into "Work" and "Life" sections.
+    - **Priority levels**: High, Medium, Low.
+    - **Split-screen display**: View Work and Life tasks side-by-side on the display interface.
+    - **Optimized layout**: Reduced font sizes and spacing to fit more tasks and minimize scrolling.
 - **Dual interface**: Control from phone/laptop, display on tablet
 - **Theme switching** (Light, Dark, Blue, Green)
 - **Touch support** for tablet interaction
@@ -192,8 +196,12 @@ whitebored/
 ## Development
 
 ### Available Scripts
-- `npm start` - Start the production server
-- `npm run dev` - Start with nodemon for development
+- `npm start` - Start the server using `node`.
+- `npm run dev` - Start the server with `nodemon` for automatic restarts during development (hot reloading for server-side changes).
+
+### Hot Reloading
+- For server-side changes (e.g., modifications to `server.js`), `npm run dev` will automatically restart the server.
+- For client-side changes (HTML, CSS, or JavaScript in the `public` folder), you will need to manually refresh your browser to see updates.
 
 ### Port Configuration
 Default port is 3000. To change:

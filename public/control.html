@@ -259,8 +259,8 @@
             border-color: #667eea;
         }
 
-        .priority-select {
-            padding: 15px;
+        .priority-select, .category-select, .date-select {
+            padding: 5px;
             border: 2px solid #e9ecef;
             border-radius: 12px;
             background: white;
@@ -268,7 +268,7 @@
         }
 
         .add-btn {
-            padding: 15px 25px;
+            padding: 5px 15px;
             background: #2ed573;
             color: white;
             border: none;
@@ -396,6 +396,37 @@
                 height: 200px;
             }
         }
+
+        /* Update select-group styling */
+        .select-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        .select-group label {
+            font-size: 0.8rem;
+            color: #495057;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .select-group select,
+        .select-group input {
+            padding: 8px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        .select-group select:focus,
+        .select-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
     </style>
 </head>
 <body>
@@ -468,12 +499,26 @@
             
             <div class="todo-input-group">
                 <input type="text" class="todo-input" id="todoInput" placeholder="Enter a new task...">
-                <select class="priority-select" id="prioritySelect">
-                    <option value="low">Low Priority</option>
-                    <option value="medium" selected>Medium Priority</option>
-                    <option value="high">High Priority</option>
-                </select>
-                <button class="add-btn" id="addTodoBtn">Add Task</button>
+                <div class="select-group">
+                    <label for="categorySelect">Category</label>
+                    <select class="category-select" id="categorySelect">
+                        <option value="life" selected>Life</option>
+                        <option value="work">Work</option>
+                    </select>
+                </div>
+                <div class="select-group">
+                    <label for="prioritySelect">Priority</label>
+                    <select class="priority-select" id="prioritySelect">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="select-group">
+                    <label for="dueDateSelect">Due Date</label>
+                    <input type="date" class="date-select" id="dueDateSelect">
+                </div>
+                <button class="add-btn" id="addTodoBtn">Add</button>
             </div>
 
             <div class="todo-list" id="todoList">
@@ -511,6 +556,7 @@
         const sizeButtons = document.querySelectorAll('.size-btn');
         const clearBtn = document.getElementById('clearBtn');
         const todoInput = document.getElementById('todoInput');
+        const categorySelect = document.getElementById('categorySelect');
         const prioritySelect = document.getElementById('prioritySelect');
         const addTodoBtn = document.getElementById('addTodoBtn');
         const todoList = document.getElementById('todoList');
@@ -687,10 +733,11 @@
 
         function addTodo() {
             const text = todoInput.value.trim();
+            const category = categorySelect.value;
             const priority = prioritySelect.value;
             
             if (text) {
-                socket.emit('add-todo', { text, priority });
+                socket.emit('add-todo', { text, category, priority });
                 todoInput.value = '';
             }
         }
@@ -701,7 +748,11 @@
                 return;
             }
 
-            const sortedTodos = todos.sort((a, b) => {
+            // Separate todos by category
+            const workTodos = todos.filter(todo => todo.category === 'work');
+            const lifeTodos = todos.filter(todo => todo.category === 'life' || !todo.category);
+
+            const sortTodos = (todoList) => todoList.sort((a, b) => {
                 if (a.completed !== b.completed) {
                     return a.completed ? 1 : -1;
                 }
@@ -709,15 +760,52 @@
                 return priorityOrder[a.priority] - priorityOrder[b.priority];
             });
 
-            todoList.innerHTML = sortedTodos.map(todo => `
-                <div class="todo-item ${todo.completed ? 'completed' : ''} ${todo.priority}-priority">
-                    <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} 
-                           onchange="toggleTodo(${todo.id})">
-                    <div class="todo-text">${todo.text}</div>
-                    <div class="todo-priority-badge priority-${todo.priority}">${todo.priority}</div>
-                    <button class="delete-btn" onclick="deleteTodo(${todo.id})">Delete</button>
-                </div>
-            `).join('');
+            const sortedWorkTodos = sortTodos(workTodos);
+            const sortedLifeTodos = sortTodos(lifeTodos);
+
+            let html = '';
+
+            // Work section
+            if (sortedWorkTodos.length > 0) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #667eea; margin-bottom: 10px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+                            💼 Work (${sortedWorkTodos.filter(t => !t.completed).length} pending)
+                        </h4>
+                        ${sortedWorkTodos.map(todo => `
+                            <div class="todo-item ${todo.completed ? 'completed' : ''} ${todo.priority}-priority">
+                                <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} 
+                                       onchange="toggleTodo(${todo.id})">
+                                <div class="todo-text">${todo.text}</div>
+                                <div class="todo-priority-badge priority-${todo.priority}">${todo.priority}</div>
+                                <button class="delete-btn" onclick="deleteTodo(${todo.id})">Delete</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            // Life section
+            if (sortedLifeTodos.length > 0) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #2ed573; margin-bottom: 10px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+                            🏠 Life (${sortedLifeTodos.filter(t => !t.completed).length} pending)
+                        </h4>
+                        ${sortedLifeTodos.map(todo => `
+                            <div class="todo-item ${todo.completed ? 'completed' : ''} ${todo.priority}-priority">
+                                <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} 
+                                       onchange="toggleTodo(${todo.id})">
+                                <div class="todo-text">${todo.text}</div>
+                                <div class="todo-priority-badge priority-${todo.priority}">${todo.priority}</div>
+                                <button class="delete-btn" onclick="deleteTodo(${todo.id})">Delete</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            todoList.innerHTML = html || '<p style="text-align: center; opacity: 0.5; padding: 20px;">No tasks yet</p>';
         }
 
         function toggleTodo(id) {

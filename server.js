@@ -99,6 +99,7 @@ io.on('connection', (socket) => {
       text: todo.text,
       completed: false,
       priority: todo.priority || 'medium',
+      category: todo.category || 'life', // Default to 'life'
       createdAt: new Date().toISOString()
     };
     whiteboardState.todos.push(newTodo);
